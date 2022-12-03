@@ -17,22 +17,10 @@ fun convertShape(code: String) =
         else -> throw RuntimeException("$code is not a valid shape")
     }
 
-data class Match(val opponent: Shape, val mine: Shape) {
-
-    fun points() = mine.points + result(opponent, mine)
-
-}
-
-fun result(opponent: Shape, mine: Shape) =
-    when (opponent) {
-        mine -> 3
-        else -> if (mine == opponent.beats()) 0 else 6
-    }
-
-enum class Outcome {
-    LOSE,
-    DRAW,
-    WIN,
+enum class Outcome(val points: Int) {
+    LOSE(0),
+    DRAW(3),
+    WIN(6),
 }
 
 fun convertOutcome(code: String) =
@@ -41,6 +29,16 @@ fun convertOutcome(code: String) =
         "Y" -> DRAW
         "Z" -> WIN
         else -> throw RuntimeException("$code is not a valid outcome")
+    }
+
+data class Match(val opponent: Shape, val mine: Shape) {
+    fun points() = mine.points + result(opponent, mine)
+}
+
+fun result(opponent: Shape, mine: Shape) =
+    when (opponent) {
+        mine -> DRAW.points
+        else -> if (mine == opponent.beats()) LOSE.points else WIN.points
     }
 
 fun response(opponent: Shape, outcome: Outcome) =
