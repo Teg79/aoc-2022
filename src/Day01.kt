@@ -18,7 +18,7 @@ fun main() {
         foldElfs(input)
             .map { it.sum() }
             .sortedDescending()
-            .subList(0, 3)
+            .take(3)
             .sum()
 
     // test if implementation meets criteria from the description, like:
