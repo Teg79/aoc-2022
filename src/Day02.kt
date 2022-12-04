@@ -32,14 +32,12 @@ fun convertOutcome(code: String) =
     }
 
 data class Match(val opponent: Shape, val mine: Shape) {
-    fun points() = mine.points + result(opponent, mine)
+    fun points() = mine.points +
+            when (opponent) {
+                mine -> DRAW.points
+                else -> if (mine == opponent.beats()) LOSE.points else WIN.points
+            }
 }
-
-fun result(opponent: Shape, mine: Shape) =
-    when (opponent) {
-        mine -> DRAW.points
-        else -> if (mine == opponent.beats()) LOSE.points else WIN.points
-    }
 
 fun response(opponent: Shape, outcome: Outcome) =
     when (outcome) {
